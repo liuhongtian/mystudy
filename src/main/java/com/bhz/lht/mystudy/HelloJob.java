@@ -10,7 +10,7 @@ public class HelloJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		System.out.println("my job running " + runningCount++ + "!");
+		System.out.println("lht's job running " + runningCount++ + "!");
 
 	}
 
