@@ -14,7 +14,7 @@ import static org.quartz.SimpleScheduleBuilder.*;
 import static org.quartz.CronScheduleBuilder.*;
 
 public class QuartzSample {
-	
+
 	public static void main(String[] args) throws InterruptedException {
 
 		try {
@@ -42,9 +42,21 @@ public class QuartzSample {
 			// Tell quartz to schedule the job using our trigger
 			scheduler.scheduleJob(job2, ctrigger);
 
-			Thread.sleep(Integer.MAX_VALUE);
+			new Thread(() -> {
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				synchronized (QuartzSample.class) {
+					QuartzSample.class.notify();
+				}
+			}).start();
 
-			scheduler.shutdown();
+			synchronized (QuartzSample.class) {
+				QuartzSample.class.wait();
+				scheduler.shutdown();
+			}
 
 		} catch (SchedulerException se) {
 			se.printStackTrace();
