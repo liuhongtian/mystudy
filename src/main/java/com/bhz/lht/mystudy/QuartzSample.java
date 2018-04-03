@@ -2,15 +2,13 @@ package com.bhz.lht.mystudy;
 
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
-import static org.quartz.JobBuilder.*;
-import static org.quartz.TriggerBuilder.*;
+import org.quartz.JobBuilder;
+import org.quartz.TriggerBuilder;
 
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 
-import static org.quartz.SimpleScheduleBuilder.*;
 import static org.quartz.CronScheduleBuilder.*;
 
 public class QuartzSample {
@@ -24,24 +22,17 @@ public class QuartzSample {
 			// and start it off
 			scheduler.start();
 
-			// Type #1: define the job and tie it to our HelloJob class
-			JobDetail job1 = newJob(HelloJob.class).withIdentity("job1", "group1").build();
+			// define the job and tie it to our HelloJob class
+			JobDetail job = JobBuilder.newJob(HelloJob.class).withIdentity("job1", "group1").build();
 
-			// Trigger the job to run now, and then repeat every 40 seconds
-			Trigger trigger = newTrigger().withIdentity("trigger1", "group1").startNow()
-					.withSchedule(simpleSchedule().withIntervalInSeconds(40).repeatForever()).build();
-			// Tell quartz to schedule the job using our trigger
-			scheduler.scheduleJob(job1, trigger);
-
-			// Type #2: define the job and tie it to our HelloJob class
-			JobDetail job2 = newJob(HelloJob.class).withIdentity("job2", "group2").build();
-
-			// or cron trigger:
-			CronTrigger ctrigger = newTrigger().withIdentity("trigger2", "group2")
+			// trigger the job to run, use cron string
+			CronTrigger ctrigger = TriggerBuilder.newTrigger().withIdentity("trigger1", "group1")
 					.withSchedule(cronSchedule("*/5 * * * * ?")).build();
-			// Tell quartz to schedule the job using our trigger
-			scheduler.scheduleJob(job2, ctrigger);
 
+			// tell quartz to schedule the job using our trigger
+			scheduler.scheduleJob(job, ctrigger);
+
+			// start a thread to tell the main thread shutdown the scheduler after 30 seconds
 			new Thread(() -> {
 				try {
 					Thread.sleep(30000);
@@ -53,6 +44,7 @@ public class QuartzSample {
 				}
 			}).start();
 
+			// main thread wait to shutdown the scheduler
 			synchronized (QuartzSample.class) {
 				QuartzSample.class.wait();
 				scheduler.shutdown();
