@@ -11,6 +11,12 @@ import org.quartz.JobDetail;
 
 import static org.quartz.CronScheduleBuilder.*;
 
+/**
+ * Quartz框架样例代码
+ * 
+ * @author liuhongtian
+ *
+ */
 public class QuartzSample {
 
 	public static void main(String[] args) throws InterruptedException {
@@ -32,7 +38,8 @@ public class QuartzSample {
 			// tell quartz to schedule the job using our trigger
 			scheduler.scheduleJob(job, ctrigger);
 
-			// start a thread to tell the main thread shutdown the scheduler after 30 seconds
+			// start a thread to tell the main thread shutdown the scheduler after 30
+			// seconds
 			new Thread(() -> {
 				try {
 					Thread.sleep(30000);

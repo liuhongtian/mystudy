@@ -38,7 +38,7 @@ public class Test {
 		predicate = (TestPO n) -> (n.getS() == 1);
 
 		long c = ia.stream().filter(predicate).count();
-		System.out.printf("女性人数 = %d\n", c);
+		System.out.printf("女性人数 = %d%n", c);
 
 		List<TestPO> l = ia.stream().filter(predicate).collect(Collectors.toList());
 		l.stream().forEach(n -> System.out.println(n.getName()));
