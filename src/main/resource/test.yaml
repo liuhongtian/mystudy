@@ -1,0 +1,36 @@
+Module: 
+- tag: userSelf
+  name: 用户自服务
+  index: 1
+  children:
+  - tag: userInfo
+    name: 基本信息
+    index: 1
+  - tag: password
+    name: 密码修改
+    index: 2
+  - tag: operLog
+    name: 操作日志
+    index: 3
+- tag: userManage
+  name: 用户管理
+  index: 2
+  children:
+    - tag: userInfo
+      name: 用户信息
+      index: 1
+    - tag: operLog
+      name: 审计日志
+      index: 2
+
+Resource: 
+- name: 用户列表
+  uriRegex: ^/users/(\?[A-Za-z0-9=&]+)?$
+  modules: #存在映射关系的模块
+  - userInfo
+- name: 单个用户（已存在）
+  uriRegex: ^/users/[A-Za-z0-9]+/$
+  modules: 
+  - userInfo
+
+...
