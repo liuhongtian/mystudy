@@ -29,6 +29,7 @@ Resource:
   modules: #存在映射关系的模块
   - userInfo
 - name: 单个用户（已存在）
+  public: true
   uriRegex: ^/users/[A-Za-z0-9]+/$
   modules: 
   - userInfo
