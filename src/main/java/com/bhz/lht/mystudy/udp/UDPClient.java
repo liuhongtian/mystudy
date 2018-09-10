@@ -1,4 +1,4 @@
-//package com.hd.datacenter;
+package com.bhz.lht.mystudy.udp;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
