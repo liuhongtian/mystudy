@@ -3,6 +3,7 @@ package com.bhz.lht.mystudy;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
+@SuppressWarnings("restriction")
 public class SignalHandlerExample implements SignalHandler {
 
 	@Override
