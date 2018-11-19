@@ -1,0 +1,21 @@
+[Unit]
+Description=mystudy
+After=syslog.target etwork.target 
+
+[Service]
+Type=simple
+WorkingDirectory=/home/mystudy
+ExecStart=/usr/bin/java -cp /home/mystudy/mystudy-0.0.1-SNAPSHOT.jar com.bhz.lht.mystudy.SignalHandlerExample
+ExecStop=/bin/kill $MAINPID
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+TimeoutStartSec=0
+KillMode=mixed
+Restart=always
+StartLimitBurst=3
+StartLimitInterval=10s
+
+[Install]
+WantedBy=multi-user.target
+
