@@ -15,7 +15,7 @@ public class OrderMain implements Runnable {
 
 	private Logger logger = LoggerFactory.getLogger(OrderMain.class);
 
-	private static final int NUM = 100;
+	private static final int NUM = 200;
 	// 按照线程数初始化倒计数器
 	private static CountDownLatch cdl = new CountDownLatch(NUM);
 
