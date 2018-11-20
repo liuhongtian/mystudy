@@ -52,7 +52,8 @@ public class Executor implements Watcher, Runnable, DataMonitor.DataMonitorListe
 //		String exec[] = new String[args.length - 3];
 //		System.arraycopy(args, 3, exec, 0, exec.length);
 
-		String hostPort = "localhost:2181";
+		//String hostPort = "localhost:2181";
+		String hostPort = "10.1.1.132:2181,10.1.1.133:2181,10.1.1.136:2181";
 		String znode = "/test";
 		String filename = "/tmp/zktest.tmp";
 		String exec[] = {"ls", "/Users/liuhongtian"};
