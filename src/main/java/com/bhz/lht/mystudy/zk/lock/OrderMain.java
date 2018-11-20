@@ -11,7 +11,7 @@ public class OrderMain implements Runnable {
 	private static final String ZK_STRING = "10.1.1.132:2181,10.1.1.133:2181,10.1.1.136:2181";
 	private static final String ZK_LOCK_PATH = "/LLOOCCKK";
 
-	private static OrderCodeGenerator ong = new OrderCodeGenerator();
+	private static OrderCodeGenerator ong = new OrderCodeGenerator(ZK_STRING);
 
 	private Logger logger = LoggerFactory.getLogger(OrderMain.class);
 
@@ -30,9 +30,9 @@ public class OrderMain implements Runnable {
 			// ……业务代码：获取订单编号
 			orderCode = ong.getOrderCode();
 			logger.info(Thread.currentThread().getName() + " got lock: =======================>" + orderCode);
-			//Thread.sleep(5000);
+			// Thread.sleep(5000);
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		} finally {
 			lock.unlock();
 		}
