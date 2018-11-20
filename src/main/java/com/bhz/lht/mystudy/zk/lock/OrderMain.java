@@ -1,6 +1,6 @@
 package com.bhz.lht.mystudy.zk.lock;
 
-import java.util.concurrent.CountDownLatch;
+import java.util.Arrays;
 import java.util.concurrent.locks.Lock;
 
 import org.slf4j.Logger;
@@ -15,9 +15,7 @@ public class OrderMain implements Runnable {
 
 	private Logger logger = LoggerFactory.getLogger(OrderMain.class);
 
-	private static final int NUM = 200;
-	// 按照线程数初始化倒计数器
-	private static CountDownLatch cdl = new CountDownLatch(NUM);
+	private static final int NUM = 100;
 
 //  private static Lock lock = new ReentrantLock();  // 加锁方式（单进程，多线程）
 	private Lock lock = new CuratorLock(ZK_STRING, ZK_LOCK_PATH); // 加锁方式2（多进程，多线程，分布式锁，使用Curator访问Zookeeper实现）
@@ -30,34 +28,38 @@ public class OrderMain implements Runnable {
 			// ……业务代码：获取订单编号
 			orderCode = ong.getOrderCode();
 			logger.info(Thread.currentThread().getName() + " got lock: =======================>" + orderCode);
-			// Thread.sleep(5000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			lock.unlock();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@Override
 	public void run() {
-		try {
-			// 等待其他线程初始化
-			cdl.await();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		// 创建订单
 		createOrder();
 	}
 
-	public static void main(String[] args) {
-		for (int i = 1; i <= NUM; i++) {
-			// 按照线程数迭代实例化线程
-			new Thread(new OrderMain()).start();
-			// 创建一个线程，倒计数器减1
-			cdl.countDown();
+	public static void main(String[] args) throws InterruptedException {
+		Thread[] ts = new Thread[NUM];
+		for(int i = 0; i < NUM; i++) {
+			ts[i] = new Thread(new OrderMain());
 		}
+
+		Arrays.asList(ts).parallelStream().forEach(t -> {
+			t.start();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 }
