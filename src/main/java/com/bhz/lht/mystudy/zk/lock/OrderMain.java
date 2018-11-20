@@ -30,7 +30,7 @@ public class OrderMain implements Runnable {
 			// ……业务代码：获取订单编号
 			orderCode = ong.getOrderCode();
 			logger.info(Thread.currentThread().getName() + " got lock: =======================>" + orderCode);
-			Thread.sleep(5000);
+			//Thread.sleep(5000);
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
