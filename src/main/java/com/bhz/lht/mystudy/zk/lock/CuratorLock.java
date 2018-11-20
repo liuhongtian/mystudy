@@ -10,6 +10,12 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
+/**
+ * a distributed lock implement, used Apache Curator.
+ * 
+ * @author liuhongtian
+ *
+ */
 public class CuratorLock implements Lock {
 
 	private InterProcessMutex lock;
