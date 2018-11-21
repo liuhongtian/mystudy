@@ -16,11 +16,11 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
  * @author liuhongtian
  *
  */
-public class CuratorLock implements Lock {
+public class CuratorReentrantLock implements Lock {
 
 	private InterProcessMutex lock;
-
-	public CuratorLock(String zookeeperConnectionString, String lockPath) {
+	
+	public CuratorReentrantLock(String zookeeperConnectionString, String lockPath) {
 		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
 		CuratorFramework client = CuratorFrameworkFactory.newClient(zookeeperConnectionString, retryPolicy);
 		client.start();
