@@ -19,7 +19,13 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 public class CuratorReentrantLock implements Lock {
 
 	private InterProcessMutex lock;
-	
+
+	/**
+	 * Used as a ReentrantLock
+	 * 
+	 * @param zookeeperConnectionString
+	 * @param lockPath
+	 */
 	public CuratorReentrantLock(String zookeeperConnectionString, String lockPath) {
 		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
 		CuratorFramework client = CuratorFrameworkFactory.newClient(zookeeperConnectionString, retryPolicy);
@@ -27,6 +33,18 @@ public class CuratorReentrantLock implements Lock {
 		this.lock = new InterProcessMutex(client, lockPath);
 	}
 
+	/**
+	 * Used by CuratorReadWriteLock, holding the actual read and write lock.<br>
+	 * WARN: the instance of CuratorFramework is create by CuratorReadWriteLock
+	 * instance.
+	 * 
+	 * @param lock
+	 */
+	protected CuratorReentrantLock(InterProcessMutex lock) {
+		this.lock = lock;
+	}
+
+	@Override
 	public void lock() {
 		try {
 			this.lock.acquire();
